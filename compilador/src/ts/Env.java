@@ -43,14 +43,8 @@ public class Env {
         return null; // caso Token n�o exista em uma das TS
     }
 
-    /* Remove um dado inserido na TS */
-    public void erase(Id id) {
-        this.table.remove(id);
-    }
-
     public void imprimir() {
         for (Env e = this; e != null; e = e.prev) {
-
             for (Enumeration<Id> a = e.table.elements(); a.hasMoreElements();) {
                 Id proximo = a.nextElement();
                 System.out.println("Nome: " + proximo.getNome() + " / Tipo: " + proximo.getTipo());

@@ -11,24 +11,56 @@ package tag;
  */
 public class Tag {
 
-    public static final String // PONTUACAO
-            PONTOVIRGULA = "PONTOVIRGULA",
-            VIRGULA = "VIRGULA", DOISPONTOS = "DOISPONTOS", ABREP = "ABREP", FECHAP = "FECHAP",
-            ABREASPAS = "ABREASPAS", FECHAASPAS = "FECHAASPAS",
-            //PALAVRAS RESERVADAS
-            PROGRAM = "PROGRAM", DECLARE = "DECLARE", START = "START", END = "END", INT = "INT", STRING = "STRING", IF = "IF",
+    public static final String
+            APP = "APP",
+            IDENTIFIER = "IDENTIFIER",
+            START = "START",
+            STOP = "STOP",
+            INTEGER = "INTEGER",
+            REAL = "REAL",
+            IF = "IF",
             THEN = "THEN",
-            ELSE = "ELSE", DO = "DO", WHILE = "WHILE", READ = "READ", WRITE = "WRITE",
-            //OPERADORES L�GICOS
-            OR = "OR", AND = "AND", RECEBE = "RECEBE",
-            //OPERADORES RELACIONAIS
-            IGUAL = "IGUAL", MENOR = "MENOR", MENORIGUAL = "MENORIGUAL", MAIOR = "MAIOR", MAIORIGUAL = "MAIORIGUAL", DIFERENTE = "DIFERENTE",
-            //OPERADORES MATEM�TICOS
-            MAIS = "MAIS", MENOS = "MENOS", BARRA = "BARRA", VEZES = "VEZES",
-            //OUTROS
-            INTEGER_CONST = "INTEGER_CONST", LITERAL = "LITERAL", IDENTIFIER = "IDENTIFIER", COMENTARIO = "COMENTARIO",
-            //DESCONHECIDO
-
-            DESCONHECIDO = "DESCONHECIDO";
-
+            END = "END",
+            ELSE = "ELSE",
+            REPEAT = "REPEAT",
+            UNTIL = "UNTIL",
+            WHILE = "WHILE",
+            READ = "READ",
+            WRITE = "WRITE",
+            LITERAL = "LITERAL",
+            RELOP = "RELOP",
+            MULOP = "MULOP",
+            CONSTANT = "CONSTANT",
+            ADDOP = "ADDOP",
+            INTEGER_CONST = "INTEGER_CONST",
+            FLOAT_CONST = "FLOAT_CONST",
+            
+            ABRECHAVE = "ABRECHAVE",
+            FECHACHAVE = "FECHACHAVE",
+            ABREPARENTESE = "ABREPARENTESE",
+            FECHAPARENTESE = "FECHAPARENTESE",
+            ABREASPAS = "ABREASPAS",
+            DOISPONTOS = "DOISPONTOS",
+            VIRGULA = "VIRGULA",
+            COMENTARIO = "COMENTARIO",
+            BARRA = "BARRA",
+            TRACO = "TRACO",
+            EXCLAMACAO = "EXCLAMACAO",
+            UNDERSCORE = "UNDERSCORE",
+            PONTO = "PONTO",
+            PONTOVIRGULA = "PONTOVIRGULA",
+            ATRIBUICAO = "ATRIBUICAO",
+            OP_MULTIPLICACAO = "OP_MULTIPLICACAO",
+            OP_DIVISAO = "OP_DIVISAO",
+            OP_SUBTRACAO = "OP_SUBTRACAO",
+            OP_SOMA = "OP_SOMA",
+            OP_OR = "OP_OR",
+            OP_AND = "OP_AND",
+            OP_RECEBE = "OP_RECEBE",
+            OP_GT = "OP_GT",
+            OP_GTE = "OP_GTE",
+            OP_LT = "OP_LT",
+            OP_LTE = "OP_LTE",
+            OP_NOTEQUAL = "OP_NOTEQUAL";
+            
 }

@@ -34,44 +34,41 @@ public class Lexer {
     private Hashtable<String, Word> words = new Hashtable<String, Word>();
 
     /*
-     * M�todo para inserir palavras reservadas na HashTable
+     * Metodo para inserir palavras reservadas na HashTable
      */
     private void reserve(Word w) {
-        words.put(w.getLexeme(), w); // lexema � a chave para entrada na HashTable
+        words.put(w.getLexeme(), w); // lexema eh a chave para entrada na HashTable
     }
 
     /*
-     * M�todo construtor
+     * Metodo construtor
      */
     public Lexer(String fileName) throws FileNotFoundException {
         try {
             this.fileName = fileName;
             this.file = new FileReader(fileName);
         } catch (FileNotFoundException e) {
-            System.out.println("Arquivo n�o encontrado");
+            System.out.println("Arquivo nao encontrado");
             throw e;
         }
 
         // Insere palavras reservadas na HashTable
-        reserve(new Word("program", Tag.PROGRAM));
-        reserve(new Word("declare", Tag.DECLARE));
+        reserve(new Word("app", Tag.APP));
         reserve(new Word("start", Tag.START));
         reserve(new Word("end", Tag.END));
-        reserve(new Word("int", Tag.INT));
-        reserve(new Word("string", Tag.STRING));
+        reserve(new Word("int", Tag.INTEGER));
         reserve(new Word("if", Tag.IF));
         reserve(new Word("then", Tag.THEN));
         reserve(new Word("else", Tag.ELSE));
-        reserve(new Word("do", Tag.DO));
         reserve(new Word("while", Tag.WHILE));
         reserve(new Word("read", Tag.READ));
         reserve(new Word("write", Tag.WRITE));
-        reserve(new Word("or", Tag.OR));
-        reserve(new Word("and", Tag.AND));
+        reserve(new Word("or", Tag.OP_OR));
+        reserve(new Word("and", Tag.OP_AND));
     }
 
     /*
-     * L� o pr�ximo caractere do arquivo
+     * Le o proximo caractere do arquivo
      */
     private void readch() throws IOException {
         caracterAtual = (char) file.read();
@@ -79,7 +76,7 @@ public class Lexer {
     }
 
     /*
-     * L� o pr�ximo caractere do arquivo e verifica se � igual a c
+     * Le o proximo caractere do arquivo e verifica se e igual a c
      * @return boolean
      * @param char c
      */
@@ -128,7 +125,7 @@ public class Lexer {
 
         desconsideraDelimitadores();
 
-        // Operadores e pontua��o
+        // Operadores e pontuacao
         switch (caracterAtual) {
             case ';': {
                 readch();
@@ -140,31 +137,31 @@ public class Lexer {
             }
             case '(': {
                 readch();
-                return new Token(Tag.ABREP);
+                return new Token(Tag.ABREPARENTESE);
             }
             case ')': {
                 readch();
-                return new Token(Tag.FECHAP);
+                return new Token(Tag.FECHAPARENTESE);
             }
-            case ' ': {
+            case '"': {
                 readch();
                 return new Token(Tag.ABREASPAS);
             }
-            case ' ': {
-                readch();
-                return new Token(Tag.FECHAASPAS);
-            }
+            //case '"': {
+            //    readch();
+            //    return new Token(Tag.FECHAASPAS);
+            //}
             case ':': {
                 readch();
                 return new Token(Tag.DOISPONTOS);
             }
             case '+': {
                 readch();
-                return new Token(Tag.MAIS);
+                return new Token(Tag.OP_SOMA);
             }
             case '-': {
                 readch();
-                return new Token(Tag.MENOS);
+                return new Token(Tag.OP_SUBTRACAO);
             }
             case '/': {
                 if (readch('/')) {
@@ -212,29 +209,29 @@ public class Lexer {
             }
             case '*': {
                 readch();
-                return new Token(Tag.VEZES);
+                return new Token(Tag.OP_MULTIPLICACAO);
             }
             case '=':
                 if (readch('=')) {
-                    return new Token(Tag.IGUAL);
+                    return new Token(Tag.OP_RECEBE);
                 } else {
-                    return new Token(Tag.RECEBE);
+                    return new Token(Tag.ATRIBUICAO);
                 }
             case '<':
                 if (readch('=')) {
-                    return new Token(Tag.MENORIGUAL);
+                    return new Token(Tag.OP_LTE);
                 } else if (caracterAtual == '>') {
                     readch();
-                    return new Token(Tag.DIFERENTE);
+                    return new Token(Tag.OP_NOTEQUAL);
                 } else {
                     readch();
-                    return new Token(Tag.MENOR);
+                    return new Token(Tag.OP_LT);
                 }
             case '>':
                 if (readch('=')) {
-                    return new Token(Tag.MAIORIGUAL);
+                    return new Token(Tag.OP_GTE);
                 } else {
-                    return new Token(Tag.MAIOR);
+                    return new Token(Tag.OP_GT);
                 }
         }
 
