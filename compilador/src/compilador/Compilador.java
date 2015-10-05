@@ -30,12 +30,12 @@ public class Compilador {
 
         try {
             System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE SIMBOLOS----");
-            for (int j = 1; j <= 8; j++) {
+          //  for (int j = 1; j <= 8; j++) {
                 Env env = new Env(null);
 
                 
-                lexer = new Lexer("teste"+j);
-                System.out.println("\n\nTESTE " + j + ":\n");
+                lexer = new Lexer(args[0]);
+                System.out.println("\n\n"+args[0] + ":\n");
 
                 System.out.println("Tokens identificados:");
 
@@ -58,9 +58,9 @@ public class Compilador {
                     System.out.println("\t\t" + retorno);
 
                 }
-                System.out.println("\nTabela de Simbolos - Teste " + j + ":\n");
+                System.out.println("\nTabela de Simbolos - Teste " +args[0]+ ":\n");
                 env.imprimir();
-            }
+          //  }
 
         } catch (IOException e) {
             e.printStackTrace();
