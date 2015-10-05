@@ -15,6 +15,7 @@ import tag.Tag;
 import token.Comentario;
 import token.Float_const;
 import token.Integer_const;
+import token.Literal;
 import token.Token;
 import token.Word;
 
@@ -26,7 +27,7 @@ public class Lexer {
 
     public static int line = 1; // contador de linhas
 
-    private static final int VAZIO = 65535, TKDESC = 1, IDLONGA = 2, COMABERTO = 3;
+    private static final int VAZIO = 65535, TKDESC = 1,LITERALMALFORMADA = 2;
     public static final String SVAZIO = "65535";
 
     private char caracterAtual = ' '; // caractere lido do arquivo
@@ -68,8 +69,6 @@ public class Lexer {
         reserve(new Word("until", Tag.REPEAT));
         reserve(new Word("read", Tag.READ));
         reserve(new Word("write", Tag.WRITE));
-        reserve(new Word("or", Tag.OP_OR));
-        reserve(new Word("and", Tag.OP_AND));
         reserve(new Word("stop", Tag.STOP));
     }
 
@@ -101,10 +100,9 @@ public class Lexer {
     private void erro(int tipo) {
         if (tipo == TKDESC) {
             System.out.println("\t !!!!!ERRO (TOKEN DESCONHECIDO)!!!!!");
-        } else if (tipo == IDLONGA) {
-            System.out.println("\t !!!!!ERRO (ID MAIOR QUE 20 CARACTERES)!!!!!");
-        } else if (tipo == COMABERTO) {
-            System.out.println("\t !!!!!ERRO (COMENTARIO SEM FECHAMENTO)!!!!!");
+        } 
+        else if(tipo == LITERALMALFORMADA){
+            System.out.println("\t !!!!!ERRO (LITERAL MAL FORMADA - FAVOR FECHÁ-LA COM '}')!!!!!");
         }
     }
 
@@ -150,8 +148,31 @@ public class Lexer {
                 return new Token(Tag.FECHAPARENTESE);
             }
             case '{': {
+                StringBuilder sb = new StringBuilder();
+                sb.append(caracterAtual);
+                
                 readch();
-                return new Token(Tag.ABRECHAVE);
+                
+                if(Character.isDefined(caracterAtual)){
+                    
+                    while(Character.isDefined(caracterAtual) && caracterAtual != '}'){
+                        sb.append(caracterAtual);
+                        readch();
+                    }
+                    if(caracterAtual == '}'){
+                        sb.append(caracterAtual);
+                        readch();
+                        return new Literal(sb.toString());
+                    }
+                    else {
+                        erro(LITERALMALFORMADA);
+                        caracterAtual = ' ';
+                        return new Token(sb.toString());
+                    }
+                }
+                else{
+                    return new Token(Tag.ABRECHAVE);
+                }
             }
             case '}': {
                 readch();
@@ -161,17 +182,15 @@ public class Lexer {
                 readch();
                 return new Token(Tag.ABREASPAS);
             }
-            //case '"': {
-            //    readch();
-            //    return new Token(Tag.FECHAASPAS);
-            //}
             case ':': {
                 if (readch('=')) {
                     readch();
                     return new Token(Tag.ATRIBUICAO);
                 }
-                readch();
-                return new Token(Tag.DOISPONTOS);
+                else{
+                    erro(TKDESC);
+                    return new Token(String.valueOf(':'));
+                }
             }
             case '+': {
                 readch();
@@ -182,63 +201,24 @@ public class Lexer {
                 return new Token(Tag.OP_SUBTRACAO);
             }
             case '/': {
-                if (readch('/')) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append('/');
-                    sb.append('/');
-                    while (caracterAtual != '\n') {
-                        readch();
-                        sb.append(caracterAtual);
-                    }
-                    return new Comentario(sb.toString(), Tag.COMENTARIO);
-                } else if (caracterAtual == '*') {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append('/');
-                    sb.append('*');
                     readch();
-                    while (caracterAtual != '/') {
-                        while (caracterAtual != '*') {
-
-                            sb.append(caracterAtual);
-                            readch();
-                            if (!Character.isDefined(caracterAtual)) {
-                                break;
-                            }
-                        }
-
-                        if (caracterAtual == '*') {
-                            sb.append(caracterAtual);
-                        }
-
-                        readch();
-
-                        if (!Character.isDefined(caracterAtual)) {
-                            erro(COMABERTO);
-                            return new Comentario(sb.toString(), Tag.COMENTARIO);
-                        }
-                    }
-                    sb.append('/');
-                    readch();
-                    return new Comentario(sb.toString(), Tag.COMENTARIO);
-
-                } else {
                     return new Token(Tag.OP_DIVISAO);
-                }
             }
             case '*': {
                 readch();
                 return new Token(Tag.OP_MULTIPLICACAO);
             }
-            case '=':
-                if (readch('=')) {
+            case '#': {
+                readch();
+                return new Token(Tag.OP_MOD);
+            }
+            case '=':{
+                    readch();
                     return new Token(Tag.OP_COMPARA);
-                }
+            }
             case '<':
                 if (readch('=')) {
                     return new Token(Tag.OP_LTE);
-                } else if (caracterAtual == '>') {
-                    readch();
-                    return new Token(Tag.OP_NOTEQUAL);
                 } else {
                     readch();
                     return new Token(Tag.OP_LT);
@@ -248,6 +228,43 @@ public class Lexer {
                     return new Token(Tag.OP_GTE);
                 } else {
                     return new Token(Tag.OP_GT);
+                }
+            case '!': {
+                    if(readch('=')){
+                        return new Token(Tag.OP_NOTEQUAL);
+                    }
+                    else{
+                        erro(TKDESC);
+                        return new Token(String.valueOf('!'));
+                    }
+                }
+            case '&': {
+                    if(readch('&')){
+                        return new Token(Tag.OP_AND);
+                    }
+                    else{
+                        erro(TKDESC);
+                        return new Token(String.valueOf('&'));
+                    }
+                }
+            case '|': {
+                    if(readch('|')){
+                        return new Token(Tag.OP_OR);
+                    }
+                    else{
+                        erro(TKDESC);
+                        return new Token(String.valueOf('|'));
+                    }
+                }
+            case '%': {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(caracterAtual);
+                    
+                    while (caracterAtual != '\n') {
+                        readch();
+                        sb.append(caracterAtual);
+                    }
+                    return new Comentario(sb.toString(), Tag.COMENTARIO);
                 }
         }
 
@@ -278,10 +295,8 @@ public class Lexer {
         // Identificadores
         if (Character.isLetter(caracterAtual) || caracterAtual == '_') {
             StringBuilder sb = new StringBuilder();
-            int contador = 0;
             do {
                 sb.append(caracterAtual);
-                contador++;
                 readch();
             } while (Character.isLetterOrDigit(caracterAtual));
 
@@ -291,9 +306,6 @@ public class Lexer {
             if (w != null) {
 
                 return w; // palavra ja existe na w; //palavra ja existe na HashTable HashTable
-            }
-            if (contador > 20) {
-                erro(IDLONGA);
             }
             w = new Word(s, Tag.IDENTIFIER);
 
@@ -312,7 +324,6 @@ public class Lexer {
             caracterAtual = ' ';
             return t;
         }
-        // System.out.println((int) caracterAtual);
 
     }
 

@@ -30,12 +30,12 @@ public class Compilador {
 
         try {
             System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE SIMBOLOS----");
-            for (int j = 1; j <= 1; j++) {
+            for (int j = 1; j <= 6; j++) {
                 Env env = new Env(null);
 
-                //
-                lexer = new Lexer("teste2");
-                System.out.println("TESTE " + j + ":\n");
+                
+                lexer = new Lexer("teste"+j);
+                System.out.println("\n\nTESTE " + j + ":\n");
 
                 System.out.println("Tokens identificados:");
 

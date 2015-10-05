@@ -22,15 +22,12 @@ public class Word extends Token {
     public static final Word w_or = new Word("or", Tag.OP_OR);
 
     public static final Word w_program = new Word("app", Tag.APP);
-    //public static final Word w_declare = new Word("declare", Tag.DECLARE);
     public static final Word w_start = new Word("start", Tag.START);
     public static final Word w_end = new Word("end", Tag.END);
     public static final Word w_int = new Word("int", Tag.INTEGER);
-    //public static final Word w_string = new Word("string", Tag.STRING);
     public static final Word w_if = new Word("if", Tag.IF);
     public static final Word w_then = new Word("then", Tag.THEN);
     public static final Word w_else = new Word("else", Tag.ELSE);
-    //public static final Word w_do = new Word("do", Tag.DO);
     public static final Word w_while = new Word("while", Tag.WHILE);
     public static final Word w_read = new Word("read", Tag.READ);
     public static final Word w_write = new Word("write", Tag.WRITE);

@@ -54,6 +54,7 @@ public class Tag {
             OP_DIVISAO = "OP_DIVISAO",
             OP_SUBTRACAO = "OP_SUBTRACAO",
             OP_SOMA = "OP_SOMA",
+            OP_MOD = "OP_MOD",
             OP_OR = "OP_OR",
             OP_AND = "OP_AND",
             OP_COMPARA = "OP_COMPARA",
