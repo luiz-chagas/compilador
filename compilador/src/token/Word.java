@@ -15,28 +15,6 @@ public class Word extends Token {
 
     private String lexeme = "";
 
-    public static final Word w_pontovirgula = new Word(";", Tag.PONTOVIRGULA);
-    public static final Word w_virgula = new Word(",", Tag.VIRGULA);
-
-    public static final Word w_and = new Word("and", Tag.OP_AND);
-    public static final Word w_or = new Word("or", Tag.OP_OR);
-
-    public static final Word w_program = new Word("app", Tag.APP);
-    public static final Word w_start = new Word("start", Tag.START);
-    public static final Word w_end = new Word("end", Tag.END);
-    public static final Word w_int = new Word("int", Tag.INTEGER);
-    public static final Word w_if = new Word("if", Tag.IF);
-    public static final Word w_then = new Word("then", Tag.THEN);
-    public static final Word w_else = new Word("else", Tag.ELSE);
-    public static final Word w_while = new Word("while", Tag.WHILE);
-    public static final Word w_read = new Word("read", Tag.READ);
-    public static final Word w_write = new Word("write", Tag.WRITE);
-
-    public static final Word w_sum = new Word("+", Tag.OP_SOMA);
-    public static final Word w_sub = new Word("-", Tag.OP_SUBTRACAO);
-    public static final Word w_mult = new Word("*", Tag.OP_MULTIPLICACAO);
-    public static final Word w_div = new Word("/", Tag.OP_DIVISAO);
-
     public Word(String s, String tag) {
         super(tag);
         lexeme = s;

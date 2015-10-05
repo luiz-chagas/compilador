@@ -66,7 +66,7 @@ public class Lexer {
         reserve(new Word("while", Tag.WHILE));
         reserve(new Word("do", Tag.DO));
         reserve(new Word("repeat", Tag.REPEAT));
-        reserve(new Word("until", Tag.REPEAT));
+        reserve(new Word("until", Tag.UNTIL));
         reserve(new Word("read", Tag.READ));
         reserve(new Word("write", Tag.WRITE));
         reserve(new Word("stop", Tag.STOP));
@@ -99,10 +99,10 @@ public class Lexer {
      */
     private void erro(int tipo) {
         if (tipo == TKDESC) {
-            System.out.println("\t !!!!!ERRO (TOKEN DESCONHECIDO)!!!!!");
+            System.out.println("\t ERRO (TOKEN DESCONHECIDO) - Linha:"+line);
         } 
         else if(tipo == LITERALMALFORMADA){
-            System.out.println("\t !!!!!ERRO (LITERAL MAL FORMADA - FAVOR FECHÁ-LA COM '}')!!!!!");
+            System.out.println("\t ERRO (LITERAL MAL FORMADO) - Linha:"+line);
         }
     }
 
