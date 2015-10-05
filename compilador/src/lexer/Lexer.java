@@ -58,10 +58,14 @@ public class Lexer {
         reserve(new Word("start", Tag.START));
         reserve(new Word("end", Tag.END));
         reserve(new Word("int", Tag.INTEGER));
+        reserve(new Word("real", Tag.REAL));
         reserve(new Word("if", Tag.IF));
         reserve(new Word("then", Tag.THEN));
         reserve(new Word("else", Tag.ELSE));
         reserve(new Word("while", Tag.WHILE));
+        reserve(new Word("do", Tag.DO));
+        reserve(new Word("repeat", Tag.REPEAT));
+        reserve(new Word("until", Tag.REPEAT));
         reserve(new Word("read", Tag.READ));
         reserve(new Word("write", Tag.WRITE));
         reserve(new Word("or", Tag.OP_OR));
@@ -126,7 +130,7 @@ public class Lexer {
     public Token scan() throws IOException {
 
         desconsideraDelimitadores();
-
+        
         // Operadores e pontuacao
         switch (caracterAtual) {
             case ';': {
@@ -144,6 +148,14 @@ public class Lexer {
             case ')': {
                 readch();
                 return new Token(Tag.FECHAPARENTESE);
+            }
+            case '{': {
+                readch();
+                return new Token(Tag.ABRECHAVE);
+            }
+            case '}': {
+                readch();
+                return new Token(Tag.FECHACHAVE);
             }
             case '"': {
                 readch();
@@ -210,7 +222,7 @@ public class Lexer {
                     return new Comentario(sb.toString(), Tag.COMENTARIO);
 
                 } else {
-                    return new Token(Tag.BARRA);
+                    return new Token(Tag.OP_DIVISAO);
                 }
             }
             case '*': {
@@ -264,7 +276,7 @@ public class Lexer {
             return new Integer_const((int) value);
         }
         // Identificadores
-        if (Character.isLetter(caracterAtual)) {
+        if (Character.isLetter(caracterAtual) || caracterAtual == '_') {
             StringBuilder sb = new StringBuilder();
             int contador = 0;
             do {
@@ -278,7 +290,7 @@ public class Lexer {
 
             if (w != null) {
 
-                return w; // palavra j� existe na w; //palavra j� existe na HashTable HashTable
+                return w; // palavra ja existe na w; //palavra ja existe na HashTable HashTable
             }
             if (contador > 20) {
                 erro(IDLONGA);

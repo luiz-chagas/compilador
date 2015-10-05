@@ -33,7 +33,8 @@ public class Compilador {
             for (int j = 1; j <= 1; j++) {
                 Env env = new Env(null);
 
-                lexer = new Lexer("teste" + j);
+                //
+                lexer = new Lexer("teste2");
                 System.out.println("TESTE " + j + ":\n");
 
                 System.out.println("Tokens identificados:");

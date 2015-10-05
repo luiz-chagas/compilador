@@ -38,7 +38,7 @@ public class Word extends Token {
     public static final Word w_sum = new Word("+", Tag.OP_SOMA);
     public static final Word w_sub = new Word("-", Tag.OP_SUBTRACAO);
     public static final Word w_mult = new Word("*", Tag.OP_MULTIPLICACAO);
-    public static final Word w_div = new Word("/", Tag.BARRA);
+    public static final Word w_div = new Word("/", Tag.OP_DIVISAO);
 
     public Word(String s, String tag) {
         super(tag);

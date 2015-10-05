@@ -34,6 +34,7 @@ public class Tag {
             ADDOP = "ADDOP",
             INTEGER_CONST = "INTEGER_CONST",
             FLOAT_CONST = "FLOAT_CONST",
+            DO = "DO",
             
             ABRECHAVE = "ABRECHAVE",
             FECHACHAVE = "FECHACHAVE",
@@ -43,7 +44,6 @@ public class Tag {
             DOISPONTOS = "DOISPONTOS",
             VIRGULA = "VIRGULA",
             COMENTARIO = "COMENTARIO",
-            BARRA = "BARRA",
             TRACO = "TRACO",
             EXCLAMACAO = "EXCLAMACAO",
             UNDERSCORE = "UNDERSCORE",
