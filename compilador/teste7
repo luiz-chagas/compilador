@@ -1,0 +1,13 @@
+%Programa que troca dois valores
+app teste7
+int a, b, aux;
+start
+	read (a);
+	read(b);
+	aux = 0;
+	aux := b;
+	b := a;
+	a := b;
+	write (a);
+	write (b);
+stop

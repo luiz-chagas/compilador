@@ -1,0 +1,8 @@
+%Programa que verifica o comentario. Se a for impresso como 629, logo o comentário não funciona.
+app teste 82
+int a;
+start
+	read(a);
+	%a = 629;
+	write (a);
+stop

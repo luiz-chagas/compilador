@@ -30,7 +30,7 @@ public class Compilador {
 
         try {
             System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE SIMBOLOS----");
-            for (int j = 1; j <= 6; j++) {
+            for (int j = 1; j <= 8; j++) {
                 Env env = new Env(null);
 
                 
