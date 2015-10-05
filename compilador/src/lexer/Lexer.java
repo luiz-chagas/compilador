@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import tag.Tag;
 import token.Comentario;
+import token.Float_const;
 import token.Integer_const;
 import token.Token;
 import token.Word;
@@ -65,6 +66,7 @@ public class Lexer {
         reserve(new Word("write", Tag.WRITE));
         reserve(new Word("or", Tag.OP_OR));
         reserve(new Word("and", Tag.OP_AND));
+        reserve(new Word("stop", Tag.STOP));
     }
 
     /*
@@ -119,7 +121,7 @@ public class Lexer {
     }
 
     /*
-     * Escaneia o c�digo
+     * Escaneia o codigo
      */
     public Token scan() throws IOException {
 
@@ -152,6 +154,10 @@ public class Lexer {
             //    return new Token(Tag.FECHAASPAS);
             //}
             case ':': {
+                if (readch('=')) {
+                    readch();
+                    return new Token(Tag.ATRIBUICAO);
+                }
                 readch();
                 return new Token(Tag.DOISPONTOS);
             }
@@ -213,9 +219,7 @@ public class Lexer {
             }
             case '=':
                 if (readch('=')) {
-                    return new Token(Tag.OP_RECEBE);
-                } else {
-                    return new Token(Tag.ATRIBUICAO);
+                    return new Token(Tag.OP_COMPARA);
                 }
             case '<':
                 if (readch('=')) {
@@ -235,14 +239,29 @@ public class Lexer {
                 }
         }
 
-        // N�meros
+        // Numeros
         if (Character.isDigit(caracterAtual)) {
-            int value = 0;
+            float value = 0;
+            boolean isFloat = false;
+            int casaDecimal = 1;
             do {
-                value = 10 * value + Character.digit(caracterAtual, 10);
+                if (caracterAtual == '.') {
+                    isFloat = true;
+                } else {
+                    if (isFloat) {
+                        value += Character.digit(caracterAtual, 10)
+                                / (float) (10 * casaDecimal);
+                        casaDecimal *= 10;
+                    } else {
+                        value = 10 * value + Character.digit(caracterAtual, 10);
+                    }
+                }
                 readch();
-            } while (Character.isDigit(caracterAtual));
-            return new Integer_const(value);
+            } while (Character.isDigit(caracterAtual) || caracterAtual == '.');
+            if (isFloat) {
+                return new Float_const(value);
+            }
+            return new Integer_const((int) value);
         }
         // Identificadores
         if (Character.isLetter(caracterAtual)) {
@@ -269,7 +288,7 @@ public class Lexer {
             words.put(s, w);
             return w;
         }
-        // Caracteres n�o especificados
+        // Caracteres nao especificados
 
         if (caracterAtual == VAZIO) {
             Token t = new Token(String.valueOf((int) caracterAtual));

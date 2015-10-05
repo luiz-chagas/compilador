@@ -56,7 +56,7 @@ public class Tag {
             OP_SOMA = "OP_SOMA",
             OP_OR = "OP_OR",
             OP_AND = "OP_AND",
-            OP_RECEBE = "OP_RECEBE",
+            OP_COMPARA = "OP_COMPARA",
             OP_GT = "OP_GT",
             OP_GTE = "OP_GTE",
             OP_LT = "OP_LT",

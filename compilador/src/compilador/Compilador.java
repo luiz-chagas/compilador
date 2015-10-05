@@ -29,11 +29,11 @@ public class Compilador {
         Token retorno = null;
 
         try {
-            System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE S�MBOLOS----");
+            System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE SIMBOLOS----");
             for (int j = 1; j <= 1; j++) {
                 Env env = new Env(null);
 
-                lexer = new Lexer("../testes/teste" + j);
+                lexer = new Lexer("teste" + j);
                 System.out.println("TESTE " + j + ":\n");
 
                 System.out.println("Tokens identificados:");
