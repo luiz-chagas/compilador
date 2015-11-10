@@ -7,7 +7,7 @@ start
 	aux = 0;
 	aux := b;
 	b := a;
-	a := b §;
+	a := b;
 	write (a);
 	write (b);
 stop

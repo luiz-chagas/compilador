@@ -4,5 +4,5 @@ int a;
 start
 	read(a);
 	%a = 629;
-	$(a);
+	write (a);
 stop
