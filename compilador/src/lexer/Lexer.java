@@ -126,7 +126,7 @@ public class Lexer {
      * Escaneia o codigo
      */
     public Token scan() throws IOException {
-
+    
         desconsideraDelimitadores();
         
         // Operadores e pontuacao

@@ -62,6 +62,11 @@ public class Tag {
             OP_GTE = "OP_GTE",
             OP_LT = "OP_LT",
             OP_LTE = "OP_LTE",
-            OP_NOTEQUAL = "OP_NOTEQUAL";
+            OP_NOTEQUAL = "OP_NOTEQUAL",
+            
+            DELIMITADOR = "DELIMITADOR";
+    
+           
+    
             
 }
