@@ -12,6 +12,7 @@ package token;
 public class Token {
 
     public final String tag; // constante que representa o token
+    private int line = 1;
 
     public Token(String t) {
         tag = t;
@@ -27,6 +28,10 @@ public class Token {
      */
     public String getTag() {
         return tag;
+    }
+
+    public int getLine() {
+        return line;
     }
 
 }
