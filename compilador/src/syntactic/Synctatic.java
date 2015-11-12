@@ -114,24 +114,79 @@ public class Synctatic {
 		depth++;
 		type();
 		identList();
-		depth--;
-
-        
+		depth--;      
     }
     
-	private void identList() {
-		switch (token.getTag()) {
-		case Tag.IDENTIFIER:
-			eat(Tag.IDENTIFIER);
-			while (token.getTag().equals(Tag.VIRGULA)) {
-				eat(Tag.VIRGULA);
-				eat(Tag.IDENTIFIER);
-			}
-			break;
-		default:
-			error("ident-list");
-			break;
-		}
-	}
-
+    private void identList() {
+            switch (token.getTag()) {
+                case Tag.IDENTIFIER:
+                        eat(Tag.IDENTIFIER);
+                        while (token.getTag().equals(Tag.VIRGULA)) {
+                                eat(Tag.VIRGULA);
+                                eat(Tag.IDENTIFIER);
+                        }
+                        break;
+                default:
+                        error("ident-list");
+                        break;
+            }
+    }
+    
+    private void constant () {
+        switch (token.getTag()) {
+            case Tag.INTEGER_CONST:
+                eat (Tag.INTEGER_CONST);
+                break;
+            case Tag.FLOAT_CONST:
+                eat (Tag.FLOAT_CONST);
+                break;
+            default:
+                error ("Constant");
+                break;
+        }
+    }
+    
+    private void operator () {
+        switch (token.getTag()){
+            case Tag.OP_AND:
+                eat (Tag.OP_AND);
+                break;
+            case Tag.OP_COMPARA:
+                eat (Tag.OP_COMPARA);
+                break;
+            case Tag.OP_DIVISAO:
+                eat (Tag.OP_DIVISAO);
+                break;
+            case Tag.OP_GT:
+                eat (Tag.OP_GT);
+                break;
+            case Tag.OP_GTE:
+                eat (Tag.OP_GTE);
+                break;
+            case Tag.OP_LT:
+                eat (Tag.OP_LT);
+                break;
+            case Tag.OP_LTE:
+                eat (Tag.OP_LTE);
+                break;
+            case Tag.OP_MOD:
+                eat (Tag.OP_MOD);
+                break;
+            case Tag.OP_MULTIPLICACAO:
+                eat (Tag.OP_MULTIPLICACAO);
+                break;
+            case Tag.OP_NOTEQUAL:
+                eat (Tag.OP_NOTEQUAL);
+                break;
+            case Tag.OP_OR:
+                eat (Tag.OP_OR);
+                break;
+            case Tag.OP_SOMA:
+                eat (Tag.OP_SOMA);
+                break;
+            case Tag.OP_SUBTRACAO:
+                eat (Tag.OP_SUBTRACAO);
+                break;
+        }
+    }
 }
