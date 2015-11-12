@@ -187,6 +187,9 @@ public class Synctatic {
             case Tag.OP_SUBTRACAO:
                 eat (Tag.OP_SUBTRACAO);
                 break;
+            default:
+                error ("Operator");
+                break;    
         }
     }
 }
