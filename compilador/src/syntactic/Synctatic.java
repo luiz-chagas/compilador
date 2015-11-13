@@ -18,6 +18,25 @@ public class Synctatic {
     private Token token;
     private int depth;
     
+    	public void run() {
+            printMethod("program"); 
+            switch (token.getTag()) {
+                case Tag.APP:
+                    eat (token.getTag());
+                    depth++;
+                    //body();
+                    depth--;
+                    break;
+                default:
+                    error ("program");
+            }
+            
+        }
+    
+    
+    
+    
+    
     private void eat (String tag) {
         if (token.getTag().equals(tag)){
             for (int i = 0; i < depth; i++){
@@ -73,7 +92,14 @@ public class Synctatic {
    
     private void error(String producao) {
         System.out.println ("Erro na análise sintática: "+producao);
-    }    
+    } 
+        
+    private void printMethod(String local) {
+            for (int i = 0; i < depth - 1; i++)
+                    System.out.print(" ");
+            System.out.println(local);
+    }
+
     
 //    private void declList() {
 //        //printMethod("decl-list");
