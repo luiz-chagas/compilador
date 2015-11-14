@@ -89,15 +89,19 @@ public class Synctatic {
 
     private void declList() {
         printMethod("decl-list");
-        depth++;
         decl();
-        depth--;
-        eat(Tag.PONTOVIRGULA);
-        while (token.getTag().equals(Tag.INTEGER) || token.getTag().equals(Tag.REAL)) {
-            depth++;
-            decl();
-            depth--;
+        while (token.getTag().equals(Tag.PONTOVIRGULA)) {
             eat(Tag.PONTOVIRGULA);
+            decl();
+        }
+    }
+
+    private void stmtList() {
+        printMethod("stmt-list");
+        stmt();
+        while (token.getTag().equals(Tag.PONTOVIRGULA)) {
+            eat(Tag.PONTOVIRGULA);
+            stmt();
         }
     }
 
@@ -119,13 +123,44 @@ public class Synctatic {
     }
 
     private void decl() {
-        depth++;
+        printMethod("decl");
         type();
         identList();
-        depth--;
+    }
+
+    private void stmt() {
+        printMethod("stmt");
+        switch (token.getTag()) {
+            case Tag.IDENTIFIER:
+                eat(Tag.IDENTIFIER);
+                eat(Tag.ATRIBUICAO);
+                System.out.println(token);
+                simpleExpr();
+                break;
+            case Tag.IF:
+                eat(Tag.IF);
+                //condition();
+                eat(Tag.THEN);
+                stmtList();
+                eat(Tag.END);
+                break;
+            case Tag.READ:
+                eat(Tag.READ);
+                eat(Tag.ABREPARENTESE);
+                eat(Tag.IDENTIFIER);
+                eat(Tag.FECHAPARENTESE);
+                break;
+            case Tag.WRITE:
+                eat(Tag.WRITE);
+                eat(Tag.ABREPARENTESE);
+                eat(Tag.IDENTIFIER);
+                eat(Tag.FECHAPARENTESE);
+                break;
+        }
     }
 
     private void identList() {
+        printMethod("identList");
         switch (token.getTag()) {
             case Tag.IDENTIFIER:
                 eat(Tag.IDENTIFIER);
@@ -199,5 +234,11 @@ public class Synctatic {
                 error("Operator");
                 break;
         }
+    }
+
+    private void simpleExpr() {
+        printMethod("simpleExpr");
+        //term();
+        
     }
 }

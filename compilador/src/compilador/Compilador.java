@@ -31,19 +31,17 @@ public class Compilador {
         Token retorno = null;
 
         try {
-            System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE SIMBOLOS----");
+            //System.out.println("---- LISTA DE TOKENS IDENTIFICADOS E TABELAS DE SIMBOLOS----");
             Env env = new Env(null);
 
             lexer = new Lexer(args[0]);
             synctatic = new Synctatic();
 
-            System.out.println("\n\n" + args[0] + ":\n");
-
-            System.out.println("Tokens identificados:");
-
+            //System.out.println("\n\n" + args[0] + ":\n");
+            //System.out.println("Tokens identificados:");
             for (int i = 0; i < lexer.getTamanho(); i++) {
                 retorno = lexer.scan();
-                if (retorno.getClass() == Word.class || retorno.getClass() == Token.class) {
+                if (!retorno.getTag().equals(Lexer.SVAZIO)) {
                     synctatic.addToken(retorno);
                 }
 
@@ -60,11 +58,11 @@ public class Compilador {
                 if (retorno.getTag().equals(Lexer.SVAZIO)) { // Arquivo vindo com caracteres "invisiveis"
                     break;
                 }
-                System.out.println("\t\t" + retorno);
+                //System.out.println("\t\t" + retorno);
 
             }
-            System.out.println("\nTabela de Simbolos - Teste " + args[0] + ":\n");
-            env.imprimir();
+            //System.out.println("\nTabela de Simbolos - Teste " + args[0] + ":\n");
+            //env.imprimir();
             synctatic.run();
 
         } catch (IOException e) {
