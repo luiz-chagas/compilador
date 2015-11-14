@@ -7,6 +7,7 @@ package compilador;
 
 import java.io.IOException;
 import lexer.Lexer;
+import syntactic.Synctatic;
 import tag.Tag;
 import token.Token;
 import token.Word;
@@ -25,6 +26,7 @@ public class Compilador {
     public static void main(String[] args) {
 
         Lexer lexer;
+        Synctatic synctatic;
 
         Token retorno = null;
 
@@ -33,12 +35,17 @@ public class Compilador {
             Env env = new Env(null);
 
             lexer = new Lexer(args[0]);
+            synctatic = new Synctatic();
+
             System.out.println("\n\n" + args[0] + ":\n");
 
             System.out.println("Tokens identificados:");
 
             for (int i = 0; i < lexer.getTamanho(); i++) {
                 retorno = lexer.scan();
+                if (retorno.getClass() == Word.class || retorno.getClass() == Token.class) {
+                    synctatic.addToken(retorno);
+                }
 
                 // Trabalha com a TS
                 if (retorno.getTag().equals(Tag.IDENTIFIER)) {// Verifica se eh um identificador
@@ -58,7 +65,7 @@ public class Compilador {
             }
             System.out.println("\nTabela de Simbolos - Teste " + args[0] + ":\n");
             env.imprimir();
-            //  }
+            synctatic.run();
 
         } catch (IOException e) {
             e.printStackTrace();

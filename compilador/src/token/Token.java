@@ -17,6 +17,11 @@ public class Token {
     public Token(String t) {
         tag = t;
     }
+    
+    public Token(String t, int line){
+        tag = t;
+        this.line = line;
+    }
 
     @Override
     public String toString() {
