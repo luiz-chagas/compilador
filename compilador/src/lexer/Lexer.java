@@ -133,19 +133,19 @@ public class Lexer {
         switch (caracterAtual) {
             case ';': {
                 readch();
-                return new Token(Tag.PONTOVIRGULA);
+                return new Token(Tag.PONTOVIRGULA, line);
             }
             case ',': {
                 readch();
-                return new Token(Tag.VIRGULA);
+                return new Token(Tag.VIRGULA, line);
             }
             case '(': {
                 readch();
-                return new Token(Tag.ABREPARENTESE);
+                return new Token(Tag.ABREPARENTESE, line);
             }
             case ')': {
                 readch();
-                return new Token(Tag.FECHAPARENTESE);
+                return new Token(Tag.FECHAPARENTESE, line);
             }
             case '{': {
                 StringBuilder sb = new StringBuilder();
@@ -162,98 +162,98 @@ public class Lexer {
                     if(caracterAtual == '}'){
                         sb.append(caracterAtual);
                         readch();
-                        return new Literal(sb.toString());
+                        return new Literal(sb.toString(), line);
                     }
                     else {
                         erro(LITERALMALFORMADA);
                         caracterAtual = ' ';
-                        return new Token(sb.toString());
+                        return new Token(sb.toString(), line);
                     }
                 }
                 else{
-                    return new Token(Tag.ABRECHAVE);
+                    return new Token(Tag.ABRECHAVE, line);
                 }
             }
             case '}': {
                 readch();
-                return new Token(Tag.FECHACHAVE);
+                return new Token(Tag.FECHACHAVE, line);
             }
             case '"': {
                 readch();
-                return new Token(Tag.ABREASPAS);
+                return new Token(Tag.ABREASPAS, line);
             }
             case ':': {
                 if (readch('=')) {
                     readch();
-                    return new Token(Tag.ATRIBUICAO);
+                    return new Token(Tag.ATRIBUICAO, line);
                 }
                 else{
                     erro(TKDESC);
-                    return new Token(String.valueOf(':'));
+                    return new Token(String.valueOf(':'), line);
                 }
             }
             case '+': {
                 readch();
-                return new Token(Tag.OP_SOMA);
+                return new Token(Tag.OP_SOMA, line);
             }
             case '-': {
                 readch();
-                return new Token(Tag.OP_SUBTRACAO);
+                return new Token(Tag.OP_SUBTRACAO, line);
             }
             case '/': {
                     readch();
-                    return new Token(Tag.OP_DIVISAO);
+                    return new Token(Tag.OP_DIVISAO, line);
             }
             case '*': {
                 readch();
-                return new Token(Tag.OP_MULTIPLICACAO);
+                return new Token(Tag.OP_MULTIPLICACAO, line);
             }
             case '#': {
                 readch();
-                return new Token(Tag.OP_MOD);
+                return new Token(Tag.OP_MOD, line);
             }
             case '=':{
                     readch();
-                    return new Token(Tag.OP_COMPARA);
+                    return new Token(Tag.OP_COMPARA, line);
             }
             case '<':
                 if (readch('=')) {
-                    return new Token(Tag.OP_LTE);
+                    return new Token(Tag.OP_LTE, line);
                 } else {
                     readch();
-                    return new Token(Tag.OP_LT);
+                    return new Token(Tag.OP_LT, line);
                 }
             case '>':
                 if (readch('=')) {
-                    return new Token(Tag.OP_GTE);
+                    return new Token(Tag.OP_GTE, line);
                 } else {
-                    return new Token(Tag.OP_GT);
+                    return new Token(Tag.OP_GT, line);
                 }
             case '!': {
                     if(readch('=')){
-                        return new Token(Tag.OP_NOTEQUAL);
+                        return new Token(Tag.OP_NOTEQUAL, line);
                     }
                     else{
                         erro(TKDESC);
-                        return new Token(String.valueOf('!'));
+                        return new Token(String.valueOf('!'), line);
                     }
                 }
             case '&': {
                     if(readch('&')){
-                        return new Token(Tag.OP_AND);
+                        return new Token(Tag.OP_AND, line);
                     }
                     else{
                         erro(TKDESC);
-                        return new Token(String.valueOf('&'));
+                        return new Token(String.valueOf('&'), line);
                     }
                 }
             case '|': {
                     if(readch('|')){
-                        return new Token(Tag.OP_OR);
+                        return new Token(Tag.OP_OR, line);
                     }
                     else{
                         erro(TKDESC);
-                        return new Token(String.valueOf('|'));
+                        return new Token(String.valueOf('|'), line);
                     }
                 }
             case '%': {
@@ -264,7 +264,7 @@ public class Lexer {
                         readch();
                         sb.append(caracterAtual);
                     }
-                    return new Comentario(sb.toString(), Tag.COMENTARIO);
+                    return new Comentario(sb.toString(), Tag.COMENTARIO, line);
                 }
         }
 
@@ -288,9 +288,9 @@ public class Lexer {
                 readch();
             } while (Character.isDigit(caracterAtual) || caracterAtual == '.');
             if (isFloat) {
-                return new Float_const(value);
+                return new Float_const(value, line);
             }
-            return new Integer_const((int) value);
+            return new Integer_const((int) value, line);
         }
         // Identificadores
         if (Character.isLetter(caracterAtual) || caracterAtual == '_') {
@@ -304,10 +304,9 @@ public class Lexer {
             Word w = words.get(s);
 
             if (w != null) {
-
-                return w; // palavra ja existe na w; //palavra ja existe na HashTable HashTable
+                return new Word(w.getLexeme(), w.getTag(), line);
             }
-            w = new Word(s, Tag.IDENTIFIER);
+            w = new Word(s, Tag.IDENTIFIER, line);
 
             words.put(s, w);
             return w;
@@ -315,11 +314,11 @@ public class Lexer {
         // Caracteres nao especificados
 
         if (caracterAtual == VAZIO) {
-            Token t = new Token(String.valueOf((int) caracterAtual));
+            Token t = new Token(String.valueOf((int) caracterAtual), line);
             caracterAtual = ' ';
             return t;
         } else {
-            Token t = new Token(String.valueOf(caracterAtual));
+            Token t = new Token(String.valueOf(caracterAtual), line);
             erro(TKDESC);
             caracterAtual = ' ';
             return t;

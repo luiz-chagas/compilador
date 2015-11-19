@@ -19,7 +19,12 @@ public class Word extends Token {
         super(tag);
         lexeme = s;
     }
-
+    
+    public Word(String s, String tag, int line) {
+        super(tag, line);
+        lexeme = s;
+    }
+    
     @Override
     public String toString() {
         return "<(" + super.tag + "),(" + lexeme + ")>";
@@ -38,5 +43,4 @@ public class Word extends Token {
     public void setLexeme(String lexeme) {
         this.lexeme = lexeme;
     }
-
 }

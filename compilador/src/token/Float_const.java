@@ -19,6 +19,11 @@ public class Float_const extends Token {
         super(Tag.FLOAT_CONST);
         this.value = value;
     }
+    
+    public Float_const(float value, int line) {
+        super(Tag.FLOAT_CONST, line);
+        this.value = value;
+    }
 
     @Override
     public String toString() {

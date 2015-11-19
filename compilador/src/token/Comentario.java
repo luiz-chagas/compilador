@@ -18,6 +18,11 @@ public class Comentario extends Token {
         lexeme = s;
     }
 
+    public Comentario(String s, String tag, int line) {
+        super(tag, line);
+        lexeme = s;
+    }
+
     @Override
     public String toString() {
         return "<(" + super.tag + "),(" + lexeme + ")>";

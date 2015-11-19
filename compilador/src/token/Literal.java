@@ -19,6 +19,11 @@ public class Literal extends Token{
         super(Tag.LITERAL);
         this.value = value;
     }
+    
+    public Literal(String value, int line) {
+        super(Tag.LITERAL, line);
+        this.value = value;
+    }
 
     @Override
     public String toString() {

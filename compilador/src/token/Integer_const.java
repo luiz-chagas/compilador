@@ -19,6 +19,11 @@ public class Integer_const extends Token {
         super(Tag.INTEGER_CONST);
         this.value = value;
     }
+    
+    public Integer_const(int value, int line) {
+        super(Tag.INTEGER_CONST, line);
+        this.value = value;
+    }
 
     @Override
     public String toString() {

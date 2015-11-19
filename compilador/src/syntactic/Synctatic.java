@@ -25,13 +25,16 @@ public class Synctatic {
     }
 
     public void run() {
-        printMethod("program");
         token = tokens.get(0);
         switch (token.getTag()) {
             case Tag.APP:
                 eat(Tag.APP);
                 eat(Tag.IDENTIFIER);
                 body();
+                break;
+            case Tag.COMENTARIO:
+                eat(Tag.COMENTARIO);
+                run();
                 break;
             default:
                 error("program");
@@ -64,7 +67,6 @@ public class Synctatic {
     }
 
     private void type() {
-        printMethod("type");
         switch (token.getTag()) {
             case Tag.INTEGER:
                 eat(Tag.INTEGER);
@@ -90,7 +92,6 @@ public class Synctatic {
     }
 
     private void declList() {
-        printMethod("decl-list");
         decl();
         switch(token.getTag()){
             case Tag.PONTOVIRGULA:
@@ -101,7 +102,6 @@ public class Synctatic {
     }
 
     private void stmtList() {
-        printMethod("stmt-list");
         stmt();
         switch(token.getTag()){
             case Tag.PONTOVIRGULA:
@@ -112,7 +112,6 @@ public class Synctatic {
     }
 
     private void body() {
-        printMethod("body");
         switch (token.getTag()) {
             case Tag.INTEGER:
             case Tag.REAL:
@@ -129,13 +128,11 @@ public class Synctatic {
     }
 
     private void decl() {
-        printMethod("decl");
         type();
         identList();
     }
 
     private void stmt() {
-        printMethod("stmt");
         switch (token.getTag()) {
             case Tag.IDENTIFIER: //assign-stmt
                 eat(Tag.IDENTIFIER);
@@ -147,6 +144,7 @@ public class Synctatic {
                 expression();
                 eat(Tag.THEN);
                 stmtList();
+                ifStmtB();
                 eat(Tag.END);
                 break;
             case Tag.WHILE:
@@ -177,7 +175,6 @@ public class Synctatic {
     }
 
     private void identList() {
-        printMethod("identList");
         switch (token.getTag()) {
             case Tag.IDENTIFIER:
                 eat(Tag.IDENTIFIER);
@@ -207,7 +204,6 @@ public class Synctatic {
     }
 
     private void operator() {
-        printMethod("operator");
         switch (token.getTag()) {
             case Tag.OP_AND:
                 eat(Tag.OP_AND);
@@ -255,7 +251,6 @@ public class Synctatic {
     }
 
     private void simpleExpr() {
-        printMethod("simpleExpr");
         switch (token.getTag()) {
             case Tag.IDENTIFIER:
             case Tag.INTEGER_CONST:
@@ -289,7 +284,6 @@ public class Synctatic {
     }
 
     private void term() {
-        printMethod("term");
         switch (token.getTag()) {
             case Tag.IDENTIFIER:
                 eat(Tag.IDENTIFIER);
@@ -322,7 +316,6 @@ public class Synctatic {
     }
 
     private void expression() {
-        printMethod("expression");
         simpleExpr();
         switch(token.getTag()){
             case Tag.OP_COMPARA:
@@ -339,7 +332,6 @@ public class Synctatic {
     }
 
     private void writable() {
-        printMethod("writable");
         switch(token.getTag()){
             case Tag.LITERAL:
                 eat(Tag.LITERAL);
@@ -357,12 +349,18 @@ public class Synctatic {
     }
 
     private void stmtSuffix() {
-        printMethod("stmt-Suffix");
         eat(Tag.UNTIL);
         expression(); //condition ::= expression
     }
 
-    private void condition() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void ifStmtB() {
+        switch(token.getTag()){
+            case Tag.ELSE:
+                eat(Tag.ELSE);
+                stmtList();
+                break;
+            case Tag.END:
+                break;
+        }
     }
 }
