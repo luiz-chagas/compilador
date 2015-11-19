@@ -30,10 +30,8 @@ public class Synctatic {
         switch (token.getTag()) {
             case Tag.APP:
                 eat(Tag.APP);
-                depth++;
                 eat(Tag.IDENTIFIER);
                 body();
-                depth--;
                 break;
             default:
                 error("program");
@@ -55,14 +53,18 @@ public class Synctatic {
     }
 
     private void advance() {
-        if (tokens.size() > 0) {
+        if (tokens.size() > 1) {
             tokens.remove(0);
             token = tokens.get(0);
+        }else if (tokens.size() == 1){
+            tokens.remove(0);
+        }else{
+            error("no tokens left");
         }
     }
 
     private void type() {
-
+        printMethod("type");
         switch (token.getTag()) {
             case Tag.INTEGER:
                 eat(Tag.INTEGER);
@@ -90,18 +92,22 @@ public class Synctatic {
     private void declList() {
         printMethod("decl-list");
         decl();
-        while (token.getTag().equals(Tag.PONTOVIRGULA)) {
-            eat(Tag.PONTOVIRGULA);
-            decl();
+        switch(token.getTag()){
+            case Tag.PONTOVIRGULA:
+                eat(Tag.PONTOVIRGULA);
+                declList();
+                break;
         }
     }
 
     private void stmtList() {
         printMethod("stmt-list");
         stmt();
-        while (token.getTag().equals(Tag.PONTOVIRGULA)) {
-            eat(Tag.PONTOVIRGULA);
-            stmt();
+        switch(token.getTag()){
+            case Tag.PONTOVIRGULA:
+                eat(Tag.PONTOVIRGULA);
+                stmtList();
+                break;
         }
     }
 
@@ -131,30 +137,41 @@ public class Synctatic {
     private void stmt() {
         printMethod("stmt");
         switch (token.getTag()) {
-            case Tag.IDENTIFIER:
+            case Tag.IDENTIFIER: //assign-stmt
                 eat(Tag.IDENTIFIER);
                 eat(Tag.ATRIBUICAO);
-                System.out.println(token);
                 simpleExpr();
                 break;
-            case Tag.IF:
+            case Tag.IF: //if-stmt
                 eat(Tag.IF);
-                //condition();
+                expression();
                 eat(Tag.THEN);
                 stmtList();
                 eat(Tag.END);
                 break;
-            case Tag.READ:
+            case Tag.WHILE:
+                eat(Tag.WHILE);
+                expression();
+                eat(Tag.DO);
+                stmtList();
+                eat(Tag.END);
+                break;
+            case Tag.READ: //read-stmt
                 eat(Tag.READ);
                 eat(Tag.ABREPARENTESE);
                 eat(Tag.IDENTIFIER);
                 eat(Tag.FECHAPARENTESE);
                 break;
-            case Tag.WRITE:
+            case Tag.WRITE: //write-stmt
                 eat(Tag.WRITE);
                 eat(Tag.ABREPARENTESE);
-                eat(Tag.IDENTIFIER);
+                writable();
                 eat(Tag.FECHAPARENTESE);
+                break;
+            case Tag.REPEAT:
+                eat(Tag.REPEAT);
+                stmtList();
+                stmtSuffix();
                 break;
         }
     }
@@ -190,6 +207,7 @@ public class Synctatic {
     }
 
     private void operator() {
+        printMethod("operator");
         switch (token.getTag()) {
             case Tag.OP_AND:
                 eat(Tag.OP_AND);
@@ -238,7 +256,113 @@ public class Synctatic {
 
     private void simpleExpr() {
         printMethod("simpleExpr");
-        //term();
-        
+        switch (token.getTag()) {
+            case Tag.IDENTIFIER:
+            case Tag.INTEGER_CONST:
+            case Tag.FLOAT_CONST:
+            case Tag.ABREPARENTESE:
+            case Tag.OP_MULTIPLICACAO:
+            case Tag.OP_DIVISAO:
+            case Tag.OP_AND:
+                term();
+                simpleExpr();
+                break;
+            case Tag.EXCLAMACAO:
+                eat(Tag.EXCLAMACAO);
+                term();
+                break;
+            case Tag.TRACO:
+                eat(Tag.TRACO);
+                term();
+                break;
+            case Tag.OP_SOMA:
+                eat(Tag.OP_SOMA);
+                term();
+                simpleExpr();
+                break;
+            case Tag.OP_SUBTRACAO:
+                eat(Tag.OP_SUBTRACAO);
+                term();
+                simpleExpr();
+                break;
+        }
+    }
+
+    private void term() {
+        printMethod("term");
+        switch (token.getTag()) {
+            case Tag.IDENTIFIER:
+                eat(Tag.IDENTIFIER);
+                break;
+            case Tag.FLOAT_CONST:
+            case Tag.INTEGER_CONST:
+                constant();
+                break;
+            case Tag.ABREPARENTESE:
+                eat(Tag.ABREPARENTESE);
+                expression();
+                eat(Tag.FECHAPARENTESE);
+                break;
+            case Tag.OP_MULTIPLICACAO:
+                eat(Tag.OP_MULTIPLICACAO);
+                term();
+                term();
+                break;
+            case Tag.OP_DIVISAO:
+                eat(Tag.OP_DIVISAO);
+                term();
+                term();
+                break;
+            case Tag.OP_AND:
+                eat(Tag.OP_AND);
+                term();
+                term();
+                break;
+        }
+    }
+
+    private void expression() {
+        printMethod("expression");
+        simpleExpr();
+        switch(token.getTag()){
+            case Tag.OP_COMPARA:
+            case Tag.OP_GT:
+            case Tag.OP_GTE:
+            case Tag.OP_LT:
+            case Tag.OP_LTE:
+            case Tag.OP_NOTEQUAL:
+                operator();
+                simpleExpr();
+                break;
+                
+        }
+    }
+
+    private void writable() {
+        printMethod("writable");
+        switch(token.getTag()){
+            case Tag.LITERAL:
+                eat(Tag.LITERAL);
+                break;
+            case Tag.IDENTIFIER:
+            case Tag.INTEGER_CONST:
+            case Tag.FLOAT_CONST:
+            case Tag.ABREPARENTESE:
+            case Tag.EXCLAMACAO:
+            case Tag.TRACO:
+            case Tag.OP_SOMA:
+                simpleExpr();
+                break;
+        }
+    }
+
+    private void stmtSuffix() {
+        printMethod("stmt-Suffix");
+        eat(Tag.UNTIL);
+        expression(); //condition ::= expression
+    }
+
+    private void condition() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

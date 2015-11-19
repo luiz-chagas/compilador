@@ -9,3 +9,4 @@ start
         b := b + a/2 * (3 + 5);
         write(f);
         write(b);
+stop

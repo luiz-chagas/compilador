@@ -1,13 +1,13 @@
-App pessoa
+app pessoa
         int cont;
-        real altura, soma;
+        real altura, soma
 start
         cont := 5;
         soma := 0;
         repeat
                 write({Altura: });
                 read (altura);
-                soma := soma # altura;
+                soma := soma + altura;
                 cont := cont - 1
         until(cont=0);
         media := soma / 5;
