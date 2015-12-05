@@ -9,14 +9,16 @@ import java.util.LinkedList;
 import java.util.List;
 import commons.Tag;
 import java.util.ArrayList;
+import semantic.Semantic;
 import token.Token;
+import ts.Env;
 
 /**
  *
  * @author Mateus
  */
 public class Synctatic {
-
+    private Semantic semantic; 
     private List<Token> tokens;
     private Token token;
     private int depth;
@@ -26,6 +28,7 @@ public class Synctatic {
         tokens = new LinkedList<>();
         synctacticErrors = new ArrayList<String>();
         semanticErrors = new ArrayList<String> ();
+        semantic = new Semantic();
     }
 
     public void run() {
@@ -143,6 +146,7 @@ public class Synctatic {
     private void stmt() {
         switch (token.getTag()) {
             case Tag.IDENTIFIER: //assign-stmt
+                
                 eat(Tag.IDENTIFIER);
                 eat(Tag.ATRIBUICAO);
                 simpleExpr();
@@ -183,7 +187,9 @@ public class Synctatic {
     }
 
     private void identList() {
+        
         switch (token.getTag()) {
+            
             case Tag.IDENTIFIER:
                 eat(Tag.IDENTIFIER);
                 while (token.getTag().equals(Tag.VIRGULA)) {
