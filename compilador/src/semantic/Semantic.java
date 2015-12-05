@@ -7,20 +7,26 @@ package semantic;
 
 import java.util.HashMap;
 import token.Token;
+import token.Word;
 import ts.Env;
+import ts.Id;
 
 /**
  *
  * @author Mateus
  */
 public class Semantic {
-    Env env = new Env(null);
+    Env env;
 
     public Semantic() {
+         env = new Env(null);
     }
-    public void addIdentifier (Token token) {
-        if (!isUnique(token));
-        
+    public Token addIdentifier (Token token) {
+        if (!isUnique(token)) {           
+            env.put(token, new Id (((Word)token).getLexeme(),token.getTag(), 0 ));
+            return token;
+        }    
+        return null;
     }
     public boolean isUnique (Token token) {
         if (env.get(token) != null) return false;

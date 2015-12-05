@@ -11,6 +11,7 @@ import commons.Tag;
 import java.util.ArrayList;
 import semantic.Semantic;
 import token.Token;
+import token.Word;
 import ts.Env;
 
 /**
@@ -191,11 +192,12 @@ public class Synctatic {
         switch (token.getTag()) {
             
             case Tag.IDENTIFIER:
-                eat(Tag.IDENTIFIER);
-                while (token.getTag().equals(Tag.VIRGULA)) {
-                    eat(Tag.VIRGULA);
                     eat(Tag.IDENTIFIER);
-                }
+                    while (token.getTag().equals(Tag.VIRGULA)) {
+                        eat(Tag.VIRGULA);
+                        eat(Tag.IDENTIFIER);
+                    }
+                
                 break;
             default:
                 synctacticError("ident-list", token.getLine());
