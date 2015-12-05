@@ -19,7 +19,7 @@ import ts.Id;
  * @author luiz
  */
 public class Compilador {
-
+    public static Env env;
     /**
      * @param args the command line arguments
      */
@@ -36,7 +36,7 @@ public class Compilador {
          //   for (int j = 1; j < 9; j++) {
                 //System.out.println ("Teste nº"+j);
                 
-                Env env = new Env(null);
+                env = new Env(null);
                 
                 lexer = new Lexer(testeOriginal+"8");
                 synctatic = new Synctatic();

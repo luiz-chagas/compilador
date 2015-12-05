@@ -8,12 +8,12 @@ package syntactic;
 import java.util.LinkedList;
 import java.util.List;
 import commons.Tag;
+import static compilador.Compilador.env;
 import java.util.ArrayList;
 import semantic.Semantic;
 import token.Token;
 import token.Word;
 import ts.Env;
-
 /**
  *
  * @author Mateus
@@ -206,6 +206,7 @@ public class Synctatic {
     }
 
     private void constant() {
+        
         switch (token.getTag()) {
             case Tag.INTEGER_CONST:
                 eat(Tag.INTEGER_CONST);
@@ -220,7 +221,9 @@ public class Synctatic {
     }
 
     private void operator() {
+        
         switch (token.getTag()) {
+            
             case Tag.OP_AND:
                 eat(Tag.OP_AND);
                 break;
@@ -296,6 +299,7 @@ public class Synctatic {
                 term();
                 simpleExpr();
                 break;
+                
         }
     }
 
