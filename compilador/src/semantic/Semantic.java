@@ -5,6 +5,7 @@
  */
 package semantic;
 
+import static compilador.Compilador.env;
 import java.util.HashMap;
 import token.Token;
 import token.Word;
@@ -16,10 +17,8 @@ import ts.Id;
  * @author Mateus
  */
 public class Semantic {
-    Env env;
 
-    public Semantic() {
-         env = new Env(null);
+    public Semantic() {;
     }
     public Token addIdentifier (Token token) {
         if (!isUnique(token)) {           
@@ -32,13 +31,6 @@ public class Semantic {
         if (env.get(token) != null) return false;
         return true;
     }
-    public Env getEnv() {
-        return env;
-    }
 
-    public void setEnv(Env env) {
-        
-        this.env = env;
-    }
 
 }
