@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tag;
+package commons;
 
 /**
  *
@@ -64,7 +64,4 @@ public class Tag {
             OP_LTE = "OP_LTE",
             OP_NOTEQUAL = "OP_NOTEQUAL";
     
-           
-    
-            
 }

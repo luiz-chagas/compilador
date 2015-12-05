@@ -7,7 +7,8 @@ package syntactic;
 
 import java.util.LinkedList;
 import java.util.List;
-import tag.Tag;
+import commons.Tag;
+import java.util.ArrayList;
 import token.Token;
 
 /**
@@ -19,9 +20,12 @@ public class Synctatic {
     private List<Token> tokens;
     private Token token;
     private int depth;
-
+    private List<String> synctacticErrors;
+    private List<String> semanticErrors;
     public Synctatic() {
         tokens = new LinkedList<>();
+        synctacticErrors = new ArrayList<String>();
+        semanticErrors = new ArrayList<String> ();
     }
 
     public void run() {
@@ -37,7 +41,7 @@ public class Synctatic {
                 run();
                 break;
             default:
-                error("program");
+                synctacticError("program", token.getLine());
         }
     }
 
@@ -48,7 +52,9 @@ public class Synctatic {
     private void eat(String tag) {
         if (token.getTag().equals(tag)) {
             System.out.println(token.getTag() + " : " + token.toString() + "\tLinha: " + token.getLine());
+       
             advance();
+      
         } else {
             System.out.println("Erro! Token não encontrado: " + tag);
             System.out.println("Token encontrado: " + token.getTag());
@@ -62,7 +68,8 @@ public class Synctatic {
         }else if (tokens.size() == 1){
             tokens.remove(0);
         }else{
-            error("no tokens left");
+            synctacticError("no tokens left", token.getLine());    
+            //System.exit(0);
         }
     }
 
@@ -75,13 +82,13 @@ public class Synctatic {
                 eat(Tag.REAL);
                 break;
             default:
-                error("type");
+                synctacticError("type", token.getLine());
                 break;
         }
     }
 
-    private void error(String producao) {
-        System.out.println("Erro na análise sintática: " + producao);
+    private void synctacticError(String producao, int linha) {
+       synctacticErrors.add("Erro na análise sintática, linha:"+linha+ ": "+ producao);
     }
 
     private void printMethod(String local) {
@@ -107,6 +114,7 @@ public class Synctatic {
             case Tag.PONTOVIRGULA:
                 eat(Tag.PONTOVIRGULA);
                 stmtList();
+       
                 break;
         }
     }
@@ -122,7 +130,7 @@ public class Synctatic {
                 eat(Tag.STOP);
                 break;
             default:
-                error("body");
+                synctacticError("body", token.getLine());
                 break;
         }
     }
@@ -184,7 +192,7 @@ public class Synctatic {
                 }
                 break;
             default:
-                error("ident-list");
+                synctacticError("ident-list", token.getLine());
                 break;
         }
     }
@@ -198,7 +206,7 @@ public class Synctatic {
                 eat(Tag.FLOAT_CONST);
                 break;
             default:
-                error("Constant");
+                synctacticError("Constant", token.getLine());
                 break;
         }
     }
@@ -245,7 +253,7 @@ public class Synctatic {
                 eat(Tag.OP_SUBTRACAO);
                 break;
             default:
-                error("Operator");
+                synctacticError("Operator", token.getLine());
                 break;
         }
     }
@@ -363,4 +371,21 @@ public class Synctatic {
                 break;
         }
     }
+
+    public List<String> getSyntacticErrors() {
+        return synctacticErrors;
+    }
+
+    public void setSyntacticErrors(List<String> syntacticErrors) {
+        this.synctacticErrors = syntacticErrors;
+    }
+
+    public List<String> getSemanticErrors() {
+        return semanticErrors;
+    }
+
+    public void setSemanticErrors(List<String> semanticErrors) {
+        this.semanticErrors = semanticErrors;
+    }
+    
 }

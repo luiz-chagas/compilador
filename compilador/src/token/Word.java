@@ -5,7 +5,7 @@
  */
 package token;
 
-import tag.Tag;
+import commons.Tag;
 
 /**
  *

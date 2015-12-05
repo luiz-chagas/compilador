@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
-import tag.Tag;
+import commons.Tag;
 import token.Comentario;
 import token.Float_const;
 import token.Integer_const;
