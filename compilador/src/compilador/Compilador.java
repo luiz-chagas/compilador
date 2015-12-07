@@ -51,10 +51,8 @@ public class Compilador {
                                                
                     // Trabalha com a TS
                   if (retorno.getTag().equals(Tag.IDENTIFIER)) {// Verifica se eh um identificador
-                      if (env.get(retorno) == null) {
+                    if ((Id) env.get(retorno) == null )
                         env.put(retorno, new Id(((Word) retorno).getLexeme(), retorno.getTag(), 0)); // Insere na TS o identificador                   
-                        System.out.println (retorno);
-                      }
                       //else System.out.println (new Id(((Word) retorno).getLexeme(), retorno.getTag(), 0)+" já existe");
                     } else if (retorno.getClass().equals(Word.class)) {// Verifica se eh uma palavra reservada
                         if (env.get(retorno) == null) {
@@ -77,7 +75,7 @@ public class Compilador {
                 for (String erro : synctatic.getSemanticErrors()) {
                     System.out.println(erro);
                 }
-
+                env.imprimir();
        //     }    
         } catch (IOException e) {
             e.printStackTrace();
