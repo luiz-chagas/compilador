@@ -21,13 +21,14 @@ public class Semantic {
     public Semantic() {;
     }
     public Token addIdentifier (Token token) {
-        if (!isUnique(token)) {           
-            env.put(token, new Id (((Word)token).getLexeme(),token.getTag(), 0 ));
+        
+        if (isUnique(token)) {           
+            env.put(token, new Id (((Word)token).getLexeme(),token.getTag(), 0 ));          
             return token;
-        }    
+        }          
         return null;
     }
-    public boolean isUnique (Token token) {
+    public boolean isUnique (Token token) {      
         if (env.get(token) != null) return false;
         return true;
     }

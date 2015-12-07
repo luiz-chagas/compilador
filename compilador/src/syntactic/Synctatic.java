@@ -92,9 +92,11 @@ public class Synctatic {
     }
 
     private void synctacticError(String producao, int linha) {
-       synctacticErrors.add("Erro na análise sintática, linha:"+linha+ ": "+ producao);
+       synctacticErrors.add("Erro na análise sintática, linha"+linha+ ": "+ producao);
     }
-
+    private void semanticError (String producao, int linha) {
+       semanticErrors.add("Erro na análise semântica, linha"+linha+ ": "+producao);
+    }
     private void printMethod(String local) {
         for (int i = 0; i < depth - 1; i++) {
             System.out.print(" ");
@@ -196,8 +198,7 @@ public class Synctatic {
                     while (token.getTag().equals(Tag.VIRGULA)) {
                         eat(Tag.VIRGULA);
                         eat(Tag.IDENTIFIER);
-                    }
-                
+                    }                
                 break;
             default:
                 synctacticError("ident-list", token.getLine());

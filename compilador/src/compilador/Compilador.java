@@ -38,7 +38,7 @@ public class Compilador {
                 
                 env = new Env(null);
                 
-                lexer = new Lexer(testeOriginal+"8");
+                lexer = new Lexer(testeCorrigido+"1");
                 synctatic = new Synctatic();
 
                 //System.out.println("\n\n" + args[0] + ":\n");
@@ -48,14 +48,17 @@ public class Compilador {
                     if (!retorno.getTag().equals(Lexer.SVAZIO)) {
                         synctatic.addToken(retorno);
                     }
-
+                                               
                     // Trabalha com a TS
-                    if (retorno.getTag().equals(Tag.IDENTIFIER)) {// Verifica se eh um identificador
-                        env.put(retorno, new Id(((Word) retorno).getLexeme(), retorno.getTag(), 0)); // Insere na TS o identificador
+                  if (retorno.getTag().equals(Tag.IDENTIFIER)) {// Verifica se eh um identificador
+                      if (env.get(retorno) == null) {
+                        env.put(retorno, new Id(((Word) retorno).getLexeme(), retorno.getTag(), 0)); // Insere na TS o identificador                   
+                        System.out.println (retorno);
+                      }
+                      //else System.out.println (new Id(((Word) retorno).getLexeme(), retorno.getTag(), 0)+" já existe");
                     } else if (retorno.getClass().equals(Word.class)) {// Verifica se eh uma palavra reservada
                         if (env.get(retorno) == null) {
                             env.put(retorno, new Id(((Word) retorno).getLexeme(), retorno.getTag(), 0)); // Insere na TS a palavra reservada
-
                         }
                     }
 
