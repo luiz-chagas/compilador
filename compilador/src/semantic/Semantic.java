@@ -20,18 +20,19 @@ public class Semantic {
 
     public Semantic() {;
     }
-    public Token addIdentifier (Token token) {
-        
-        if (isUnique(token)) {           
-            env.put(token, new Id (((Word)token).getLexeme(),token.getTag(), 0 ));          
+
+    public Token addIdentifier(Token token, String tipo) {
+
+        if (isUnique(token)) {
+            env.put(token, new Id(((Word) token).getLexeme(), tipo, 0));
             return token;
-        }          
+        }
         return null;
     }
-    public boolean isUnique (Token token) {      
-        if (env.get(token) != null) return false;
-        return true;
-    }
 
+    public boolean isUnique(Token token) {
+        //If getToken == null, return true; else return false
+        return env.get(token) == null;
+    }
 
 }

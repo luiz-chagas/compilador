@@ -14,21 +14,25 @@ import semantic.Semantic;
 import token.Token;
 import token.Word;
 import ts.Env;
+
 /**
  *
  * @author Mateus
  */
 public class Synctatic {
-    private Semantic semantic; 
+
+    private Semantic semantic;
     private List<Token> tokens;
     private Token token;
     private int depth;
+    private String tipo;
     private List<String> synctacticErrors;
     private List<String> semanticErrors;
+
     public Synctatic() {
         tokens = new LinkedList<>();
         synctacticErrors = new ArrayList<String>();
-        semanticErrors = new ArrayList<String> ();
+        semanticErrors = new ArrayList<String>();
         semantic = new Semantic();
     }
 
@@ -55,10 +59,9 @@ public class Synctatic {
 
     private void eat(String tag) {
         if (token.getTag().equals(tag)) {
-            System.out.println(token.getTag() + " : " + token.toString() + "\tLinha: " + token.getLine());
-       
+            //System.out.println(token.getTag() + " : " + token.toString() + "\tLinha: " + token.getLine());
             advance();
-      
+
         } else {
             System.out.println("Erro! Token não encontrado: " + tag);
             System.out.println("Token encontrado: " + token.getTag());
@@ -69,10 +72,10 @@ public class Synctatic {
         if (tokens.size() > 1) {
             tokens.remove(0);
             token = tokens.get(0);
-        }else if (tokens.size() == 1){
+        } else if (tokens.size() == 1) {
             tokens.remove(0);
-        }else{
-            synctacticError("no tokens left", token.getLine());    
+        } else {
+            synctacticError("no tokens left", token.getLine());
             //System.exit(0);
         }
     }
@@ -80,9 +83,11 @@ public class Synctatic {
     private void type() {
         switch (token.getTag()) {
             case Tag.INTEGER:
+                tipo = Tag.INTEGER;
                 eat(Tag.INTEGER);
                 break;
             case Tag.REAL:
+                tipo = Tag.REAL;
                 eat(Tag.REAL);
                 break;
             default:
@@ -92,11 +97,13 @@ public class Synctatic {
     }
 
     private void synctacticError(String producao, int linha) {
-       synctacticErrors.add("Erro na análise sintática, linha"+linha+ ": "+ producao);
+        synctacticErrors.add("Erro na análise sintática, linha" + linha + ": " + producao);
     }
-    private void semanticError (String producao, int linha) {
-       semanticErrors.add("Erro na análise semântica, linha"+linha+ ": "+producao);
+
+    private void semanticError(String producao, int linha) {
+        semanticErrors.add("Erro na análise semântica, linha" + linha + ": " + producao);
     }
+
     private void printMethod(String local) {
         for (int i = 0; i < depth - 1; i++) {
             System.out.print(" ");
@@ -106,7 +113,7 @@ public class Synctatic {
 
     private void declList() {
         decl();
-        switch(token.getTag()){
+        switch (token.getTag()) {
             case Tag.PONTOVIRGULA:
                 eat(Tag.PONTOVIRGULA);
                 declList();
@@ -116,11 +123,11 @@ public class Synctatic {
 
     private void stmtList() {
         stmt();
-        switch(token.getTag()){
+        switch (token.getTag()) {
             case Tag.PONTOVIRGULA:
                 eat(Tag.PONTOVIRGULA);
                 stmtList();
-       
+
                 break;
         }
     }
@@ -149,7 +156,7 @@ public class Synctatic {
     private void stmt() {
         switch (token.getTag()) {
             case Tag.IDENTIFIER: //assign-stmt
-                
+
                 eat(Tag.IDENTIFIER);
                 eat(Tag.ATRIBUICAO);
                 simpleExpr();
@@ -190,15 +197,17 @@ public class Synctatic {
     }
 
     private void identList() {
-        
+
         switch (token.getTag()) {
-            
+
             case Tag.IDENTIFIER:
+                semantic.addIdentifier(token, tipo);
+                eat(Tag.IDENTIFIER);
+                while (token.getTag().equals(Tag.VIRGULA)) {
+                    eat(Tag.VIRGULA);
+                    semantic.addIdentifier(token, tipo);
                     eat(Tag.IDENTIFIER);
-                    while (token.getTag().equals(Tag.VIRGULA)) {
-                        eat(Tag.VIRGULA);
-                        eat(Tag.IDENTIFIER);
-                    }                
+                }
                 break;
             default:
                 synctacticError("ident-list", token.getLine());
@@ -207,7 +216,7 @@ public class Synctatic {
     }
 
     private void constant() {
-        
+
         switch (token.getTag()) {
             case Tag.INTEGER_CONST:
                 eat(Tag.INTEGER_CONST);
@@ -222,9 +231,9 @@ public class Synctatic {
     }
 
     private void operator() {
-        
+
         switch (token.getTag()) {
-            
+
             case Tag.OP_AND:
                 eat(Tag.OP_AND);
                 break;
@@ -300,7 +309,7 @@ public class Synctatic {
                 term();
                 simpleExpr();
                 break;
-                
+
         }
     }
 
@@ -338,7 +347,7 @@ public class Synctatic {
 
     private void expression() {
         simpleExpr();
-        switch(token.getTag()){
+        switch (token.getTag()) {
             case Tag.OP_COMPARA:
             case Tag.OP_GT:
             case Tag.OP_GTE:
@@ -348,12 +357,12 @@ public class Synctatic {
                 operator();
                 simpleExpr();
                 break;
-                
+
         }
     }
 
     private void writable() {
-        switch(token.getTag()){
+        switch (token.getTag()) {
             case Tag.LITERAL:
                 eat(Tag.LITERAL);
                 break;
@@ -375,7 +384,7 @@ public class Synctatic {
     }
 
     private void ifStmtB() {
-        switch(token.getTag()){
+        switch (token.getTag()) {
             case Tag.ELSE:
                 eat(Tag.ELSE);
                 stmtList();
@@ -400,5 +409,5 @@ public class Synctatic {
     public void setSemanticErrors(List<String> semanticErrors) {
         this.semanticErrors = semanticErrors;
     }
-    
+
 }
