@@ -100,8 +100,8 @@ public class Synctatic {
         synctacticErrors.add("Erro na análise sintática, linha" + linha + ": " + producao);
     }
 
-    private void semanticError(String producao, int linha) {
-        semanticErrors.add("Erro na análise semântica, linha" + linha + ": " + producao);
+    private void semanticError(String producao, int linha, String tipoErro) {
+        semanticErrors.add("Erro na análise semântica, linha" + linha + ": " + producao + "- "+tipoErro);
     }
 
     private void printMethod(String local) {
@@ -202,13 +202,13 @@ public class Synctatic {
 
             case Tag.IDENTIFIER:
                 if (semantic.addIdentifier(token, tipo) == null) {
-                    semanticError(token.getTag(), token.getLine());
+                    semanticError(token.getTag(), token.getLine(), "identificador já existe");
                 }
                 eat(Tag.IDENTIFIER);
                 while (token.getTag().equals(Tag.VIRGULA)) {
                     eat(Tag.VIRGULA);
                     if (semantic.addIdentifier(token, tipo) == null) {
-                        semanticError(token.getTag(), token.getLine());
+                        semanticError(token.getTag(), token.getLine(), "identificador já existe");
                     }
                     eat(Tag.IDENTIFIER);
                 }
@@ -220,12 +220,16 @@ public class Synctatic {
     }
 
     private void constant() {
-
+        
         switch (token.getTag()) {
             case Tag.INTEGER_CONST:
+                if (!semantic.checkIntegerType(token))
+                     semanticError(token.getTag(), token.getLine(), "não é do tipo integer");
                 eat(Tag.INTEGER_CONST);
                 break;
             case Tag.FLOAT_CONST:
+                if (!semantic.checkFloatType(token))
+                   semanticError(token.getTag(), token.getLine(), "não é do tipo float");
                 eat(Tag.FLOAT_CONST);
                 break;
             default:

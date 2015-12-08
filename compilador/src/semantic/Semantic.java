@@ -7,6 +7,7 @@ package semantic;
 
 import static compilador.Compilador.env;
 import java.util.HashMap;
+import token.Integer_const;
 import token.Token;
 import token.Word;
 import ts.Env;
@@ -44,5 +45,11 @@ public class Semantic {
         }
         else return false;       
     }
-
+    
+    public boolean checkIntegerType (Token t){       
+        return t instanceof Integer_const;    
+    }
+    public boolean checkFloatType (Token t){       
+        return t instanceof Integer_const;    
+    }
 }
