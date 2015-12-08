@@ -28,7 +28,7 @@ public class Env {
     /* Id � uma classe que representa os dados a serem armazenados na TS para */
     /* identificadores */
     public void put(Token w, Id i) {
-        table.put(w, i);
+        table.put(w, i);       
     }
 
     /* Este m�todo retorna as informa��es (Id) referentes a determinado Token */

@@ -201,12 +201,19 @@ public class Synctatic {
         switch (token.getTag()) {
 
             case Tag.IDENTIFIER:
-                semantic.addIdentifier(token, tipo);
-                eat(Tag.IDENTIFIER);
-                while (token.getTag().equals(Tag.VIRGULA)) {
-                    eat(Tag.VIRGULA);
-                    semantic.addIdentifier(token, tipo);
+                if (semantic.addIdentifier(token, tipo) != null) {
                     eat(Tag.IDENTIFIER);
+                    while (token.getTag().equals(Tag.VIRGULA)) {
+                        eat(Tag.VIRGULA);
+                        if (semantic.addIdentifier(token, tipo) != null)
+                            eat(Tag.IDENTIFIER);
+                        else {
+                            semanticError(token.getTag(), token.getLine());
+                        }
+                    }
+                }
+                else {
+                    semanticError(token.getTag(), token.getLine());
                 }
                 break;
             default:

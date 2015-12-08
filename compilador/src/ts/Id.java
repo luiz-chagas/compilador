@@ -22,6 +22,10 @@ public class Id {
         this.nivel = nivel;
     }
 
+    public Id(String lexeme) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     /**
      * @return the nome
      */
