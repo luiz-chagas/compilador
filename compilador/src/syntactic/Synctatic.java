@@ -324,6 +324,8 @@ public class Synctatic {
     private void term() {
         switch (token.getTag()) {
             case Tag.IDENTIFIER:
+                if (!semantic.identifierExists(token)) 
+                    semanticError(token.getTag(), token.getLine(), "variável ainda não foi declarada");
                 eat(Tag.IDENTIFIER);
                 break;
             case Tag.FLOAT_CONST:

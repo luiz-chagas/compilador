@@ -35,15 +35,14 @@ public class Semantic {
         //If getToken == null, return true; else return false
         return env.get(token) == null;
     }
-    
-    public boolean checkType (Token t, Token w) {
-        Id t1 = env.get(t);
-        Id w1 = env.get(w);
-        if (t1 != null && w1 != null) {
-            if (t1.getTipo().equals (w1.getTipo())) return false;
-            return true;
+    public boolean identifierExists (Token t) {
+        return env.get(t) != null;
+    }
+    public boolean checkIdentifierType (Token t) {
+        if (env.get(t) != null) {
+            
         }
-        else return false;       
+        return true;
     }
     
     public boolean checkIntegerType (Token t){       
