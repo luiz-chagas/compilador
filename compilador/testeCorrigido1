@@ -1,5 +1,5 @@
 app teste1
-    int a, a, b, c;
+    int a, b, c;
     int result
 start
     read (a);

@@ -8,6 +8,7 @@ package ts;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import token.Token;
+import token.Word;
 
 /**
  *
@@ -15,11 +16,12 @@ import token.Token;
  */
 public class Env {
 
-    private Hashtable<Token, Id> table; // tabela de s�mbolos do ambiente
+    private Hashtable<String, Id> table; // tabela de s�mbolos do ambiente
     protected Env prev; // ambiente imediatamente superior
+    private Word aux;
 
     public Env(Env n) {
-        table = new Hashtable<Token, Id>(); // cria a TS para o ambiente
+        table = new Hashtable<String, Id>(); // cria a TS para o ambiente
         prev = n; // associa o ambiente atual ao anterior
     }
 
@@ -28,14 +30,16 @@ public class Env {
     /* Id � uma classe que representa os dados a serem armazenados na TS para */
     /* identificadores */
     public void put(Token w, Id i) {
-        table.put(w, i);       
+        aux = (Word)w;
+        table.put(aux.getLexeme(), i);       
     }
 
     /* Este m�todo retorna as informa��es (Id) referentes a determinado Token */
     /* O Token � pesquisado do ambiente atual para os anteriores */
     public Id get(Token w) {
         for (Env e = this; e != null; e = e.prev) {
-            Id found = e.table.get(w);
+            aux = (Word)w;
+            Id found = e.table.get(aux.getLexeme());
             if (found != null) {
                 return found;
             }

@@ -31,8 +31,8 @@ public class Synctatic {
 
     public Synctatic() {
         tokens = new LinkedList<>();
-        synctacticErrors = new ArrayList<String>();
-        semanticErrors = new ArrayList<String>();
+        synctacticErrors = new ArrayList<>();
+        semanticErrors = new ArrayList<>();
         semantic = new Semantic();
     }
 
@@ -201,19 +201,16 @@ public class Synctatic {
         switch (token.getTag()) {
 
             case Tag.IDENTIFIER:
-                if (semantic.addIdentifier(token, tipo) != null) {
-                    eat(Tag.IDENTIFIER);
-                    while (token.getTag().equals(Tag.VIRGULA)) {
-                        eat(Tag.VIRGULA);
-                        if (semantic.addIdentifier(token, tipo) != null)
-                            eat(Tag.IDENTIFIER);
-                        else {
-                            semanticError(token.getTag(), token.getLine());
-                        }
-                    }
-                }
-                else {
+                if (semantic.addIdentifier(token, tipo) == null) {
                     semanticError(token.getTag(), token.getLine());
+                }
+                eat(Tag.IDENTIFIER);
+                while (token.getTag().equals(Tag.VIRGULA)) {
+                    eat(Tag.VIRGULA);
+                    if (semantic.addIdentifier(token, tipo) == null) {
+                        semanticError(token.getTag(), token.getLine());
+                    }
+                    eat(Tag.IDENTIFIER);
                 }
                 break;
             default:
