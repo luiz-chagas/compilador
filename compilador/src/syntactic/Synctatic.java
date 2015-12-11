@@ -63,7 +63,7 @@ public class Synctatic {
 
     private void eat(String tag) {
         if (token.getTag().equals(tag)) {
-            //System.out.println(token.getTag() + " : " + token.toString() + "\tLinha: " + token.getLine());
+            System.out.println(token.getTag() + " : " + token.toString() + "\tLinha: " + token.getLine());
             advance();
 
         } else {
