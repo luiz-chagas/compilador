@@ -38,7 +38,7 @@ public class Env {
     /* O Token � pesquisado do ambiente atual para os anteriores */
     public Id get(Token w) {
         for (Env e = this; e != null; e = e.prev) {
-            aux = (Word)w;
+            aux = (Word) w;
             Id found = e.table.get(aux.getLexeme());
             if (found != null) {
                 return found;

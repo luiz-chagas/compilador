@@ -14,13 +14,14 @@ import semantic.Semantic;
 import token.Token;
 import token.Word;
 import ts.Env;
+import ts.Id;
 
 /**
  *
  * @author Mateus
  */
 public class Synctatic {
-
+    private Id aux;
     private Semantic semantic;
     private List<Token> tokens;
     private Token token;
@@ -28,12 +29,15 @@ public class Synctatic {
     private String tipo;
     private List<String> synctacticErrors;
     private List<String> semanticErrors;
-
+    private ArrayList <Token> expression;
+    private String lastType;
     public Synctatic() {
         tokens = new LinkedList<>();
         synctacticErrors = new ArrayList<>();
         semanticErrors = new ArrayList<>();
         semantic = new Semantic();
+        expression = new ArrayList <Token> ();
+        lastType = "";
     }
 
     public void run() {
@@ -156,7 +160,7 @@ public class Synctatic {
     private void stmt() {
         switch (token.getTag()) {
             case Tag.IDENTIFIER: //assign-stmt
-
+                aux = env.get(token);
                 eat(Tag.IDENTIFIER);
                 eat(Tag.ATRIBUICAO);
                 simpleExpr();
@@ -224,16 +228,16 @@ public class Synctatic {
         switch (token.getTag()) {
             case Tag.INTEGER_CONST:
                 if (!semantic.checkIntegerType(token))
-                     semanticError(token.getTag(), token.getLine(), "não é do tipo integer");
+                     semanticError(aux.getNome(), token.getLine(), "não é do tipo integer");              
                 eat(Tag.INTEGER_CONST);
                 break;
             case Tag.FLOAT_CONST:
                 if (!semantic.checkFloatType(token))
-                   semanticError(token.getTag(), token.getLine(), "não é do tipo float");
+                   semanticError(aux.getNome(), token.getLine(), "não é do tipo float");
                 eat(Tag.FLOAT_CONST);
                 break;
             default:
-                synctacticError("Constant", token.getLine());
+                synctacticError("Constante de tipo desconhecido", token.getLine());
                 break;
         }
     }
@@ -322,11 +326,22 @@ public class Synctatic {
     }
 
     private void term() {
+        
+        
         switch (token.getTag()) {
             case Tag.IDENTIFIER:
+                aux = env.get(token);
                 if (!semantic.identifierExists(token)) 
                     semanticError(token.getTag(), token.getLine(), "variável ainda não foi declarada");
+                if (!lastType.equals("") && !aux.getTipo().equals(lastType)) {
+                    semanticError(token.getTag(), token.getLine(), "expressão com tipos incompatíveis");
+                    System.out.println (aux.getTipo() + " "+lastType);
+                }   
+               // System.out.println (semantic.getIdentifierType(lastType+" "+semantic.getIdentifierType(token)));
+                
+                //semantic.getIdentifierType(token);
                 eat(Tag.IDENTIFIER);
+                if (aux != null) lastType = aux.getTipo();
                 break;
             case Tag.FLOAT_CONST:
             case Tag.INTEGER_CONST:
