@@ -36,7 +36,7 @@ public class Synctatic {
         synctacticErrors = new ArrayList<>();
         semanticErrors = new ArrayList<>();
         semantic = new Semantic();
-        expression = new ArrayList <Token> ();
+        expression = new ArrayList <> ();
         lastType = "";
     }
 
@@ -205,10 +205,12 @@ public class Synctatic {
         switch (token.getTag()) {
 
             case Tag.IDENTIFIER:
+                aux = env.get(token);
                 if (semantic.addIdentifier(token, tipo) == null) {
-                    semanticError(token.getTag(), token.getLine(), "identificador já existe");
+                    semanticError(aux.getNome(), token.getLine(), "identificador já existe");
                 }
                 eat(Tag.IDENTIFIER);
+                
                 while (token.getTag().equals(Tag.VIRGULA)) {
                     eat(Tag.VIRGULA);
                     if (semantic.addIdentifier(token, tipo) == null) {
@@ -333,15 +335,14 @@ public class Synctatic {
                 aux = env.get(token);
                 if (!semantic.identifierExists(token)) 
                     semanticError(token.getTag(), token.getLine(), "variável ainda não foi declarada");
-                if (!lastType.equals("") && !aux.getTipo().equals(lastType)) {
+                else if (!lastType.equals("") && !aux.getTipo().equals(lastType)) {
                     semanticError(token.getTag(), token.getLine(), "expressão com tipos incompatíveis");
                     System.out.println (aux.getTipo() + " "+lastType);
                 }   
                // System.out.println (semantic.getIdentifierType(lastType+" "+semantic.getIdentifierType(token)));
-                
                 //semantic.getIdentifierType(token);
-                eat(Tag.IDENTIFIER);
-                if (aux != null) lastType = aux.getTipo();
+                    eat(Tag.IDENTIFIER);
+                    if (aux != null) lastType = aux.getTipo();
                 break;
             case Tag.FLOAT_CONST:
             case Tag.INTEGER_CONST:
